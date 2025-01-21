@@ -1,26 +1,28 @@
-# Modulo 2: Procesamiento y limpieza de datos
+# Modulo 3: Análisis de datos
 import pandas as pd
 
-def procesar_datos(datos):
+def calcular_distancia_promedio(datos):
     """
-    Limpia y procesa los datos.
+    Calcula la distancia promedio entre puntos consecutivos.
     
     Args:
-        datos (pd.DataFrame): DataFrame con los datos a procesar.
+        datos (pd.DataFrame): DataFrame con las columnas "latitude" y "longitude".
         
     Returns:
-        pd.DataFrame: DataFrame con los datos procesados.
+        float: Distancia promedio en kilómetros.
     """
+    from geopy.distance import geodesic
+    
     try:
-        # Eliminar filas con valores nulos
-        datos = datos.dropna(subset=["latitude", "longitude"])
+        distancias = []
+        for i in range(len(datos) - 1):
+            coord1 = (datos.iloc[i]["lat"], datos.iloc[i]["lon"])
+            coord2 = (datos.iloc[i + 1]["lat"], datos.iloc[i + 1]["lon"])
+            distancias.append(geodesic(coord1, coord2).kilometers)
         
-        # Convertir coordenadas a tipo float
-        datos["latitude"] = datos["latitude"].astype(float)
-        datos["longitude"] = datos["longitude"].astype(float)
-        
-        print("Datos procesados correctamente.")
-        return datos
+        promedio = sum(distancias) / len(distancias)
+        print(f"Distancia promedio: {promedio:.2f} km")
+        return promedio
     except Exception as e:
-        print(f"Error al procesar los datos: {e}")
+        print(f"Error al calcular distancias: {e}")
         return None

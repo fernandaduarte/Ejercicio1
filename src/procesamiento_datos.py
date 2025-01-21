@@ -13,11 +13,11 @@ def procesar_datos(datos):
     """
     try:
         # Eliminar filas con valores nulos
-        datos = datos.dropna(subset=["latitude", "longitude"])
+        datos = datos.dropna(subset=["lat", "lon"])
         
         # Convertir coordenadas a tipo float
-        datos["latitude"] = datos["latitude"].astype(float)
-        datos["longitude"] = datos["longitude"].astype(float)
+        datos["lat"] = datos["lat"].astype(float)
+        datos["lon"] = datos["lon"].astype(float)
         
         print("Datos procesados correctamente.")
         return datos
